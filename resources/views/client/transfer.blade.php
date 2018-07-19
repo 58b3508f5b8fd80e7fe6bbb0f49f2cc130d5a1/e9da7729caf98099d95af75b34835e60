@@ -1,4 +1,4 @@
-@php    $public='';    if(config('app.env') == 'production')    $public ='public/main'; @endphp
+@php    $public='';    if(config('app.env') == 'production')    $public ='main/public'; @endphp
 @extends('layouts.client')
 @section('title','Transfer SMS')
 @section('styles')
