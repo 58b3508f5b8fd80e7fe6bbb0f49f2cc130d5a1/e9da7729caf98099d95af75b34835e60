@@ -1,4 +1,4 @@
-@php    $public='';    if(config('app.env') == 'production')    $public ='public'; @endphp <!doctype html>
+@php    $public='';    if(config('app.env') == 'production')    $public ='public/main'; @endphp <!doctype html>
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
@@ -11,7 +11,7 @@
     <title>@yield('title') - {{ config('app.name', 'TLSavings') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset($public.'/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset($public.'/main/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -76,6 +76,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset($public.'/js/app.js') }}"></script>
+    <script src="{{ asset($public.'/main/js/app.js') }}"></script>
 </body>
 </html>

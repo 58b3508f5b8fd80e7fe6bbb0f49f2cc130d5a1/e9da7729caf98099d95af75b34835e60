@@ -1,4 +1,4 @@
-@php    $public='';    if(config('app.env') == 'production')    $public ='public'; @endphp @extends('layouts.app-example')
+@php    $public='';    if(config('app.env') == 'production')    $public ='public/main'; @endphp @extends('layouts.app-example')
 @section('title','API Clients')
 
 @section('content')

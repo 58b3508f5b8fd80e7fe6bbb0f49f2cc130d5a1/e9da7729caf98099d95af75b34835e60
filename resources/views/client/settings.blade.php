@@ -1,7 +1,7 @@
 @php
     $data = session('data');
 @endphp
-@php    $public='';    if(config('app.env') == 'production')    $public ='public'; @endphp
+@php    $public='';    if(config('app.env') == 'production')    $public ='public/main'; @endphp
 @extends('layouts.client')
 @section('title','Settings')
 @section('styles')
