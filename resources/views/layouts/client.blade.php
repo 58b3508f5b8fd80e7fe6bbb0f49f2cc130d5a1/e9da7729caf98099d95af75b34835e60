@@ -136,9 +136,12 @@
                         </li>
                         <li class="">
                             <a href="{{url('/settings')}}"><i class="zmdi zmdi-settings-square"></i> Settings</a>
-                        </li><li class="">
-                            <a href="{{url('/admin/users')}}"><i class="zmdi zmdi-accounts"></i> Users</a>
                         </li>
+                        @if(Auth::user()->type=="admin")
+                            <li class="">
+                                <a href="{{url('/admin/users')}}"><i class="zmdi zmdi-accounts"></i> Users</a>
+                            </li>
+                        @endif
                     </ul>
 
                 </div>

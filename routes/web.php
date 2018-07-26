@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
-    Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware'=>'isAdmin'], function () {
         Route::get('users', 'AdminController@viewUsers');
         Route::get('user/{id}', 'AdminController@viewUser');
     });
