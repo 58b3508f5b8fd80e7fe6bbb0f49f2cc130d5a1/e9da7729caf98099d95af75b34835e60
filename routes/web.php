@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::middleware(['auth'])->group(function () {
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+        Route::get('users', 'AdminController@viewUsers');
+        Route::get('user/{id}', 'AdminController@viewUser');
+    });
     Route::get('/home', 'HomeController@index')->name('home');
     Route::post('/bulksms', 'SMSController@bulksms');
     Route::get('/buy', function () {
@@ -28,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/buy/ ', 'BuyController@index');
     Route::get('/buy/failed', 'BuyController@index');
 
-    Route::get('buy/tlsavings/verify','BuyController@tlsavings');
+    Route::get('buy/tlsavings/verify', 'BuyController@tlsavings');
     Route::post('/buy/tlsavings',
         function (\Illuminate\Http\Request $request) {
             $http = new \GuzzleHttp\Client();
@@ -38,8 +42,8 @@ Route::middleware(['auth'])->group(function () {
                     'form_params' => [
                         'key'         => config('tlpay.key'),
                         'secret'      => config('tlpay.secret'),
-                        'callback'     => url('buy/tlsavings/verify'),
-                        'email'        => \Illuminate\Support\Facades\Auth::user()->email,
+                        'callback'    => url('buy/tlsavings/verify'),
+                        'email'       => \Illuminate\Support\Facades\Auth::user()->email,
                         'amount'      => $request->amount,
                         'description' => "$request->description",
                     ]
@@ -74,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/sms/history', function () {
         $data['messages'] = \App\SMS::where('secret', Auth::user()->secret)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'desc')->limit(500)
             ->get();
         return view('client.smsHistory', $data);
     });
@@ -136,7 +140,7 @@ Route::get('/sendsms', function (\Illuminate\Http\Request $request) {
                 $message,
                 config('app.url'));
             echo "Sent To<br>Message: $message<br>From: $from<br>To: $to>";
-        }else{
+        } else {
             echo 'You entered an incorrect password';
         }
     }

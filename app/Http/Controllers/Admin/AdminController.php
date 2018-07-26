@@ -1,53 +1,37 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\SMS;
 use App\Transaction;
+use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
-class HomeController extends Controller
+class AdminController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
+    //
+    public function viewUsers(){
+        $data['users']=User::where('type','client')->get();
 
+        return view('admin.users',$data);
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        /*switch (Auth::user()->type) {
-            case 'client':
-                $data = $this->getClientData();
-                return view('client.home', $data);
-                break;
-            case 'admin':
-                return view('admin.home');
-                break;
-
-        }*/
-        $data = $this->getClientData();
-        return view('client.home', $data);
+    public function viewUser($id){
+        $user=User::find($id-133);
+        
+        $data=$this->getClientData($user);
+        $data['user']=$user;
+        return view('admin.user',$data);
     }
 
-    public function getClientData()
+    public function getClientData($user)
     {
-        $sent = SMS::where('secret', Auth::user()->secret)->sum('units');
+        $sent = SMS::where('secret', $user->secret)->sum('units');
         $bought = Transaction::where([
             [
                 'to',
-                Auth::user()->user_id
+                $user->user_id
             ],
             ['status', 'successful'],
             ['type', 'purchase']
@@ -55,7 +39,7 @@ class HomeController extends Controller
         $refund = Transaction::where([
             [
                 'to',
-                Auth::user()->user_id
+                $user->user_id
             ],
             ['status', 'successful'],
             ['type', 'refund']
@@ -63,7 +47,7 @@ class HomeController extends Controller
         $transout = Transaction::where([
             [
                 'from',
-                Auth::user()->user_id
+                $user->user_id
             ],
             ['status', 'successful'],
             ['type', 'transfer']
@@ -71,7 +55,7 @@ class HomeController extends Controller
         $transin = Transaction::where([
             [
                 'to',
-                Auth::user()->user_id
+                $user->user_id
             ],
             ['status', 'successful'],
             ['type', 'transfer']

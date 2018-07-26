@@ -87,6 +87,11 @@
                         <i class="zmdi zmdi-card"></i>
                     </a>
                 </li>
+                <li class="dropdown"><a class="hvr-underline-from-center text-warning"
+                                        href="{{url('/users')}}" title="View Users">
+                        <i class="zmdi zmdi-user"></i>
+                    </a>
+                </li>
                 <li class="dropdown"><a class="hvr-underline-from-center text-danger"
                                         href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
@@ -131,6 +136,8 @@
                         </li>
                         <li class="">
                             <a href="{{url('/settings')}}"><i class="zmdi zmdi-settings-square"></i> Settings</a>
+                        </li><li class="">
+                            <a href="{{url('/admin/users')}}"><i class="zmdi zmdi-accounts"></i> Users</a>
                         </li>
                     </ul>
 
