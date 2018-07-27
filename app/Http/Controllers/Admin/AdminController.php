@@ -12,7 +12,7 @@ class AdminController extends Controller
 {
     //
     public function viewUsers(){
-        $data['users']=User::where('type','client')->get();
+        $data['users']=User::all();
 
         return view('admin.users',$data);
     }
@@ -21,6 +21,9 @@ class AdminController extends Controller
         $user=User::find($id-133);
         
         $data=$this->getClientData($user);
+        $data['messages'] = SMS::where('secret', $user->secret)
+            ->orderBy('created_at', 'desc')->limit(500)
+            ->get();
         $data['user']=$user;
         return view('admin.user',$data);
     }

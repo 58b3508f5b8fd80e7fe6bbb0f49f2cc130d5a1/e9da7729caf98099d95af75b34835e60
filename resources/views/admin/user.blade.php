@@ -1,6 +1,6 @@
 @php    $public='';    if(config('app.env') == 'production')    $public ='main/public'; @endphp
 @extends('layouts.client')
-@section('title','Users')
+@section('title',"User ($user->first_name)")
 @section('content')
     <div id="page-wrapper">
 
@@ -136,10 +136,74 @@
                 </div>
             </div>
         </div>
+        <div class="row" style="margin-top:2em;">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table id="general-table" class="table table-striped dataTable table-vcenter">
+                        <thead>
+                        <tr>
+                            <th class="text-center">S/No.</th>
+                            <th class="text-center">SMS ID</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Message</th>
+                            <th>Units</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @php $i=1; @endphp
+                        @foreach($messages as $message)
+
+                            @php
+
+                                $msg1 = substr($message->sms_id,0,6 );
+                                $msg2 = substr($message->sms_id,-6);
+                                if($message->status=='sent')
+                                    $status ='success';
+                                elseif($message->status=='failed')
+                                    $status ='danger';
+                                else
+                                    $status ='pending';
+                            @endphp
+                            <tr>
+                                <td>{{$i}}</td>
+                                <td>
+                                    @if (strlen($message->sms_id) > 15)
+                                        {{"$msg1......$msg2"}}
+                                    @else
+                                        {{$message->sms_id}}
+                                    @endif
+                                </td>
+                                <td>{{$message->from}}</td>
+                                <td>{{$message->to}}</td>
+                                <td>{{$message->message}}</td>
+                                <td>{{$message->units}}</td>
+                                <td>
+                                    <span class="label label-{{$status}}">{{$message->status}}</span>
+                                </td>
+                                <td>{{date('d-m-Y H:i:s',strtotime($message->created_at))}}</td>
+                            </tr>
+                            @php $i++; @endphp
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
     </div>
 @endsection
 @section('scripts')
+    <script src="{{asset($public.'/app/js/datatables.min.js')}}"></script>
+
+    <script src="{{asset($public.'/app/js/datatables.responsive.js')}}"></script>
     <script>
+        $('.table').DataTable({
+            responsive: true
+        });
         $.notify({
             // options
             message: 'Welcome to {{config('app.name')}}'
